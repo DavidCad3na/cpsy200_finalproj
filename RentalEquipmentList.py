@@ -1,15 +1,17 @@
-#import rentalEquipment as re
-rentalEquipmentList = []
+class RentalEquipmentList:
 
-def addRentalEquipment(equipment):
-    rentalEquipmentList.append(equipment)
-    return equipment
+    #import rentalEquipment as re
+    rentalEquipmentList = []
 
-def removeRentalEquipment(equipmentId):
-    global rentalEquipmentList
-    rentalEquipmentList = [equipment for equipment in rentalEquipmentList if equipment['equipmentId'] != equipmentId]
-    print(f"Rental equipment with ID {equipmentId} has been removed.")
+    def addRentalEquipment(equipment):
+        rentalEquipmentList.append(equipment)
+        return equipment
 
-def viewRentalEquipment():
-    global rentalEquipmentList
-    return rentalEquipmentList
+    def removeRentalEquipment(equipmentId):
+        global rentalEquipmentList
+        rentalEquipmentList = [equipment for equipment in rentalEquipmentList if equipment['equipmentId'] != equipmentId]
+        print(f"Rental equipment with ID {equipmentId} has been removed.")
+
+    def viewRentalEquipment():
+        global rentalEquipmentList
+        return rentalEquipmentList
