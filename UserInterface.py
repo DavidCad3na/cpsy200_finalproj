@@ -1,9 +1,18 @@
+# Created by Brett Shalagan
+
 from CustomerManager import CustomerManager
 from RentalEquipment import RentalEquipment
 from RentalEquipmentList import RentalEquipmentList
 from RentalManager import RentalManager
+from ReportCompilor import ReportCompilor
 
 class UserInterface:
+    
+    def __init__(self):
+        # Creating an instance of ReportCompilor
+        self.report_compilor = ReportCompilor()
+        
+    
     
     def systemManager(self):
         """
@@ -12,12 +21,16 @@ class UserInterface:
         """
         pass
     
+    
+    
     def manageInventory(self):
         """
         This method is responsible for managing the inventory.
         It includes options to view, add, remove, or update items in the inventory.
         """
         pass
+    
+    
     
     def equipmentRental(self):
         """
@@ -26,12 +39,38 @@ class UserInterface:
         """
         pass
     
+    
+    
     def manageCustomerInfo(self):
         """
         This method is responsible for managing customer information.
         It includes options to view, add, remove, or update customer information.
         """
-        pass
+        while True:
+            print("\n=== Manage Customer Info ===")
+            print("1. View Customer Information")
+            print("2. Add New Customer")
+            print("3. Remove Customer")
+            print("4. Update Customer Information")
+            print("5. Back to Main Menu")
+
+            choice = input("Enter your choice: ")
+
+            if choice == "1":
+                self.customer_manager.viewCustomers()
+            elif choice == "2":
+                self.customer_manager.addCustomer()
+            elif choice == "3":
+                self.customer_manager.removeCustomer()
+            elif choice == "4":
+                self.customer_manager.updateCustomer()
+            elif choice == "5":
+                print("Returning to Main Menu.")
+                break
+            else:
+                print("Invalid choice. Please try again.")
+                
+    
     
     def generateReports(self):
         """
@@ -48,16 +87,18 @@ class UserInterface:
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                self.generateRentalHistoryReport()
+                self.report_compilor.generateRentalHistoryReport()
             elif choice == "2":
-                self.generateInventoryStatusReport()
+                self.report_compilor.generateInventoryStatusReport()
             elif choice == "3":
-                self.generateCustomerInfoReport()
+                self.report_compilor.generateCustomerInfoReport()
             elif choice == "4":
                 print("Returning to Main Menu.")
                 break
             else:
                 print("Invalid choice. Please try again.")
+                
+                
         
     def displayMenu(self):
         """
@@ -91,6 +132,8 @@ class UserInterface:
                 break
             else:
                 print("Invalid choice. Please try again.")
+                
+                
 
 # Entry point for the program
 if __name__ == "__main__":
