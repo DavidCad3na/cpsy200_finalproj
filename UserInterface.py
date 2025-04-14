@@ -74,7 +74,7 @@ class UserInterface:
             print("6. Exit")
 
             choice = input("Enter your choice: ")
-            # print(f"DEBUG: User selected option {choice}")
+            # print(f"DEBUG: User selected option {choice}") (In the case option selection starts buggin try this)
 
             if choice == "1":
                 self.systemManager()
