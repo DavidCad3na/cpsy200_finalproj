@@ -9,10 +9,14 @@ from ReportCompilor import ReportCompilor
 class UserInterface:
     
     def __init__(self):
-        # Creating an instance of ReportCompilor
+        # Creating instances of the necessary classes
         self.report_compilor = ReportCompilor()
+        self.customer_manager = CustomerManager()
+        self.rental_manager = RentalManager()
+        self.rental_equipment = RentalEquipment()
+        self.rental_equipment_list = RentalEquipmentList()
         
-    
+        
     
     def systemManager(self):
         """
@@ -37,8 +41,38 @@ class UserInterface:
         This method is responsible for managing equipment rentals.
         It includes options to rent, return, or view rented equipment.
         """
-        pass
-    
+        while True:
+            print("\n=== Equipment Rental ===")
+            print("1. Rent Equipment")
+            print("2. Return Equipment")
+            print("3. View Rented Equipment")
+            print("4. Calculate Rental Cost")
+            print("5. Back to Main Menu")
+
+            choice = input("Enter your choice: ")
+
+            if choice == "1":
+                rental_id = input("Enter Rental ID: ")
+                rental_start_date = input("Enter Rental Start Date (YYYY-MM-DD): ")
+                customer = input("Enter Customer Name: ")
+                equipment = input("Enter Equipment Name: ")
+                daily_rental_cost = input("Enter Daily Rental Cost: ")
+                self.rental_manager.addRental(rental_id, rental_start_date, customer, equipment, daily_rental_cost)
+            elif choice == "2":
+                rental_id = input("Enter Rental ID to return: ")
+                return_date = input("Enter Return Date (YYYY-MM-DD): ")
+                self.rental_manager.endRental(rental_id, return_date)
+            elif choice == "3":
+                self.rental_manager.viewRentals()
+            elif choice == "4":
+                rental_id = input("Enter Rental ID to calculate cost: ")
+                self.rental_manager.calculateRental(rental_id)
+            elif choice == "5":
+                print("Returning to Main Menu.")
+                break
+            else:
+                print("Invalid choice. Please try again.")
+        
     
     
     def manageCustomerInfo(self):
@@ -59,11 +93,19 @@ class UserInterface:
             if choice == "1":
                 self.customer_manager.viewCustomers()
             elif choice == "2":
-                self.customer_manager.addCustomer()
+                customerId = input("Enter Customer ID: ")
+                firstname = input("Enter First Name: ")
+                lastname = input("Enter Last Name: ")
+                contactPhone = input("Enter Contact Phone: ")
+                email = input("Enter Email: ")
+                notes = input("Enter Notes: ")
+                self.customer_manager.addCustomer(customerId, firstname, lastname, contactPhone, email, notes)
             elif choice == "3":
-                self.customer_manager.removeCustomer()
+                customerId = input("Enter Customer ID to remove: ")
+                self.customer_manager.removeCustomer(customerId)
             elif choice == "4":
-                self.customer_manager.updateCustomer()
+                customerId = input("Enter Customer ID to update: ")
+                self.customer_manager.editCustomerDetails(customerId)
             elif choice == "5":
                 print("Returning to Main Menu.")
                 break

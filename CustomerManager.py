@@ -1,50 +1,45 @@
+# Needed to make some changes for functionality with UI. - Brett
+
 class CustomerManager:
+    def __init__(self):
+        # Initialize instance variables
+        self.customers = []
+        self.customerID = 0
 
-    customers = []
-    customerID = 0
-    firstname = ""
-    lastname = ""
-    contactPhone = ""
-    email = ""
-    notes = ""
-
-    def addCustomer(customerId, firstname, lastname, contactPhone, Email, notes):
-        global customers
+    def addCustomer(self, customerId, firstname, lastname, contactPhone, email, notes):
         new_customer = {
             'customerId': customerId,
             'firstname': firstname,
             'lastname': lastname,
             'contactPhone': contactPhone,
-            'Email': Email,
+            'email': email,
             'notes': notes
         }
-
-        customers.append(new_customer)
+        self.customers.append(new_customer)
+        print(f"Customer {firstname} {lastname} added successfully.")
         return new_customer
 
-    def removeCustomer(customerID):
-        global rental
-        rental = [customer for customer in customers if customer['customerID'] != customerID]
+    def removeCustomer(self, customerID):
+        self.customers = [customer for customer in self.customers if customer['customerId'] != customerID]
         print(f"Customer with ID {customerID} has been removed.")
 
-    def viewCustomers():
-        global customers
-        return customers
+    def viewCustomers(self):
+        if not self.customers:
+            print("No customers found.")
+        else:
+            print("\n=== Customer List ===")
+            for customer in self.customers:
+                print(f"ID: {customer['customerId']}, Name: {customer['firstname']} {customer['lastname']}, "
+                      f"Phone: {customer['contactPhone']}, Email: {customer['email']}, Notes: {customer['notes']}")
 
-    def editCustomerDetails(customerID):
-        global customers
-        for customer in customers:
-            if customer['customerID'] == customerID:
-
-                newfirstname = print("Enter new first name: ")
-                customer['firstname'] = newfirstname
-
-                newlastname = print("Enter new last name: ")
-                customer['lastname'] = newlastname
-
-                newContactPhone = input("Enter new contact phone: ")
-                customer['contactPhone'] = newContactPhone
-
-                newEmail = input("Enter new email: ")
-                customer['email'] = newEmail
-                break
+    def editCustomerDetails(self, customerID):
+        for customer in self.customers:
+            if customer['customerId'] == customerID:
+                print(f"Editing details for Customer ID {customerID}:")
+                customer['firstname'] = input("Enter new first name: ") or customer['firstname']
+                customer['lastname'] = input("Enter new last name: ") or customer['lastname']
+                customer['contactPhone'] = input("Enter new contact phone: ") or customer['contactPhone']
+                customer['email'] = input("Enter new email: ") or customer['email']
+                print(f"Customer ID {customerID} updated successfully.")
+                return
+        print(f"No customer found with ID {customerID}.")
