@@ -1,8 +1,9 @@
 from datetime import datetime
 
 class RentalManager:
-    def __init__(self):
-        self.rentals = []  # Instance variable to store rental records
+    def __init__(self, equipment_list):
+        self.rentals = []
+        self.equipment_list = equipment_list
 
     def addRental(self, rentalId, rentalStartDate, customer, equipment, dailyrentalCost):
         new_rental = {

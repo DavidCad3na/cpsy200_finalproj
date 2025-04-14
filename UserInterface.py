@@ -7,14 +7,13 @@ from RentalManager import RentalManager
 from ReportCompilor import ReportCompilor
 
 class UserInterface:
-    
     def __init__(self):
         # Creating instances of the necessary classes
         self.report_compilor = ReportCompilor()
         self.customer_manager = CustomerManager()
-        self.rental_manager = RentalManager()
+        self.rental_equipment_list = RentalEquipmentList()  # Initialize RentalEquipmentList first
+        self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager
         self.rental_equipment = RentalEquipment()
-        self.rental_equipment_list = RentalEquipmentList()
         
         
     

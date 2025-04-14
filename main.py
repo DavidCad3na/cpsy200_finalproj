@@ -1,9 +1,14 @@
+from RentalManager import RentalManager
+from RentalEquipmentList import RentalEquipmentList
+
 class Main:
 
-    import RentalManager as rm
+    # Initialize the equipment list
+    equipment_list = RentalEquipmentList()
 
-    #Test code for RentalManager
-    print("Final CSPY project for semester 2")
-    rm.addRental("R001", "2025-04-14", "Dave Doe", "Snow Board", 25.0)
-    print("Rental added successfully.")
-    print(rm.viewRentalsFormatted())
+    # Add some equipment to the inventory
+    equipment_list.addRentalEquipment({'equipmentId': 'E001', 'name': 'Excavator', 'available': True})
+    equipment_list.addRentalEquipment({'equipmentId': 'E002', 'name': 'Bulldozer', 'available': True})
+
+    # Initialize the rental manager with the equipment list
+    rental_manager = RentalManager(equipment_list)
