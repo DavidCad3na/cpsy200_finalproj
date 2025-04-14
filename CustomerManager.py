@@ -1,48 +1,50 @@
-customers = []
-customerID = 0
-firstname = ""
-lastname = ""
-contactPhone = ""
-email = ""
-notes = ""
+class CustomerManager:
 
-def addCustomer(customerId, firstname, lastname, contactPhone, Email, notes):
-    global customers
-    new_customer = {
-        'customerId': customerId,
-        'firstname': firstname,
-        'lastname': lastname,
-        'contactPhone': contactPhone,
-        'Email': Email,
-        'notes': notes
-    }
+    customers = []
+    customerID = 0
+    firstname = ""
+    lastname = ""
+    contactPhone = ""
+    email = ""
+    notes = ""
 
-    customers.append(new_customer)
-    return new_customer
+    def addCustomer(customerId, firstname, lastname, contactPhone, Email, notes):
+        global customers
+        new_customer = {
+            'customerId': customerId,
+            'firstname': firstname,
+            'lastname': lastname,
+            'contactPhone': contactPhone,
+            'Email': Email,
+            'notes': notes
+        }
 
-def removeCustomer(customerID):
-    global rental
-    rental = [customer for customer in customers if customer['customerID'] != customerID]
-    print(f"Customer with ID {customerID} has been removed.")
+        customers.append(new_customer)
+        return new_customer
 
-def viewCustomers():
-    global customers
-    return customers
+    def removeCustomer(customerID):
+        global rental
+        rental = [customer for customer in customers if customer['customerID'] != customerID]
+        print(f"Customer with ID {customerID} has been removed.")
 
-def editCustomerDetails(customerID):
-    global customers
-    for customer in customers:
-        if customer['customerID'] == customerID:
+    def viewCustomers():
+        global customers
+        return customers
 
-            newfirstname = print("Enter new first name: ")
-            customer['firstname'] = newfirstname
+    def editCustomerDetails(customerID):
+        global customers
+        for customer in customers:
+            if customer['customerID'] == customerID:
 
-            newlastname = print("Enter new last name: ")
-            customer['lastname'] = newlastname
+                newfirstname = print("Enter new first name: ")
+                customer['firstname'] = newfirstname
 
-            newContactPhone = input("Enter new contact phone: ")
-            customer['contactPhone'] = newContactPhone
+                newlastname = print("Enter new last name: ")
+                customer['lastname'] = newlastname
 
-            newEmail = input("Enter new email: ")
-            customer['email'] = newEmail
-            break
+                newContactPhone = input("Enter new contact phone: ")
+                customer['contactPhone'] = newContactPhone
+
+                newEmail = input("Enter new email: ")
+                customer['email'] = newEmail
+                break
