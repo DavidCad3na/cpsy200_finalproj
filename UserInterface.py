@@ -20,9 +20,33 @@ class UserInterface:
     def systemManager(self):
         """
         This method is responsible for managing the system.
-        It includes options to add, remove, or update items in the inventory.
+        It includes options to reset data, view system status, or perform administrative tasks.
         """
-        pass
+        while True:
+            print("\n=== System Manager ===")
+            print("1. Reset Inventory Data")
+            print("2. View System Status")
+            print("3. Back to Main Menu")
+
+            choice = input("Enter your choice: ")
+
+            if choice == "1":
+                confirm = input("Are you sure you want to reset all inventory data? (yes/no): ").strip().lower()
+                if confirm == "yes":
+                    self.rental_equipment_list.rentalEquipmentList.clear()
+                    print("All inventory data has been reset.")
+                else:
+                    print("Reset operation canceled.")
+            elif choice == "2":
+                print("\n=== System Status ===")
+                print(f"Total Equipment in Inventory: {len(self.rental_equipment_list.rentalEquipmentList)}")
+                print(f"Total Rentals: {len(self.rental_manager.rentals)}")
+                print(f"Total Customers: {len(self.customer_manager.customers)}")  # Assuming `customers` is a list in CustomerManager
+            elif choice == "3":
+                print("Returning to Main Menu.")
+                break
+            else:
+                print("Invalid choice. Please try again.")
     
     
     
@@ -31,7 +55,42 @@ class UserInterface:
         This method is responsible for managing the inventory.
         It includes options to view, add, remove, or update items in the inventory.
         """
-        pass
+        while True:
+            print("\n=== Manage Inventory ===")
+            print("1. View Inventory")
+            print("2. Add New Equipment")
+            print("3. Remove Equipment")
+            print("4. Update Equipment Availability")
+            print("5. Back to Main Menu")
+
+            choice = input("Enter your choice: ")
+
+            if choice == "1":
+                self.rental_equipment_list.viewRentalEquipment()
+            elif choice == "2":
+                equipment_id = input("Enter Equipment ID: ")
+                name = input("Enter Equipment Name: ")
+                available = input("Is the equipment available? (yes/no): ").strip().lower() == "yes"
+                self.rental_equipment_list.addRentalEquipment({
+                    'equipmentId': equipment_id,
+                    'name': name,
+                    'available': available
+                })
+            elif choice == "3":
+                equipment_id = input("Enter Equipment ID to remove: ")
+                self.rental_equipment_list.removeRentalEquipment(equipment_id)
+            elif choice == "4":
+                equipment_id = input("Enter Equipment ID to update availability: ")
+                availability = input("Is the equipment available? (yes/no): ").strip().lower() == "yes"
+                if availability:
+                    self.rental_equipment_list.markAsReturned(equipment_id)
+                else:
+                    self.rental_equipment_list.markAsRented(equipment_id)
+            elif choice == "5":
+                print("Returning to Main Menu.")
+                break
+            else:
+                print("Invalid choice. Please try again.")
     
     
     
