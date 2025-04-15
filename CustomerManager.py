@@ -1,5 +1,5 @@
 # Needed to make some changes for functionality with UI. - Brett
-
+# Created By David Cadena
 class CustomerManager:
     def __init__(self):
         # Initialize instance variables
