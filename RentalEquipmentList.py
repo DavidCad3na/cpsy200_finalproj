@@ -1,4 +1,4 @@
-# Altered/Created by Brett Shalagan
+# Created by David Cadena / Altered By Brett Shalagan
 
 class RentalEquipmentList:
     def __init__(self):
