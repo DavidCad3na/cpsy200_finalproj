@@ -1,5 +1,6 @@
 # Created by Brett Shalagan
 
+from db_manager import DatabaseManager
 from CustomerManager import CustomerManager
 from RentalEquipment import RentalEquipment
 from RentalEquipmentList import RentalEquipmentList
@@ -9,8 +10,9 @@ from ReportCompilor import ReportCompilor
 class UserInterface:
     def __init__(self):
         # Creating instances of the necessary classes
+        self.db = DatabaseManager()
         self.report_compilor = ReportCompilor()
-        self.customer_manager = CustomerManager()
+        self.customer_manager = CustomerManager(self.db)
         self.rental_equipment_list = RentalEquipmentList()  # Initialize RentalEquipmentList first (Must be in this order)
         self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
         self.rental_equipment = RentalEquipment()
@@ -39,9 +41,9 @@ class UserInterface:
                     print("Reset operation canceled.")
             elif choice == "2":
                 print("\n=== System Status ===")
-                print(f"Total Equipment in Inventory: {len(self.rental_equipment_list.rentalEquipmentList)}")
-                print(f"Total Rentals: {len(self.rental_manager.rentals)}")
-                print(f"Total Customers: {len(self.customer_manager.customers)}")  # Assuming `customers` is a list in CustomerManager
+                print(f"Total Equipment in Inventory: {len(self.db.fetch_query("SELECT * FROM rental_equipment"))}")
+                print(f"Total Rentals: {len(self.db.fetch_query("SELECT * FROM rentals"))}")                
+                print(f"Total Customers: {len(self.db.fetch_query("SELECT * FROM customers"))}")  # Assuming `customers` is a list in CustomerManager
             elif choice == "3":
                 print("Returning to Main Menu.")
                 break
@@ -238,4 +240,7 @@ class UserInterface:
 # Entry point for the program
 if __name__ == "__main__":
     ui = UserInterface()
-    ui.displayMenu()
+    try:
+        ui.displayMenu()
+    finally:
+        ui.db.close()
