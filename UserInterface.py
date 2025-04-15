@@ -11,8 +11,8 @@ class UserInterface:
         # Creating instances of the necessary classes
         self.report_compilor = ReportCompilor()
         self.customer_manager = CustomerManager()
-        self.rental_equipment_list = RentalEquipmentList()  # Initialize RentalEquipmentList first
-        self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager
+        self.rental_equipment_list = RentalEquipmentList()  # Initialize RentalEquipmentList first (Must be in this order)
+        self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
         self.rental_equipment = RentalEquipment()
         
         
