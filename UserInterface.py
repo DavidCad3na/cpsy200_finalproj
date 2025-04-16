@@ -41,7 +41,7 @@ class UserInterface:
                     print("Reset operation canceled.")
             elif choice == "2":
                 print("\n=== System Status ===")
-                print(f"Total Equipment in Inventory: {len(self.db.fetch_query('SELECT * FROM rental_equipment'))}") # THIS DOES NOT WORK HEET
+                print(f"Total Equipment in Inventory: {len(self.db.fetch_query('SELECT * FROM rental_equipment'))}")
                 print(f"Total Rentals: {len(self.db.fetch_query('SELECT * FROM rentals'))}")                
                 print(f"Total Customers: {len(self.db.fetch_query('SELECT * FROM customers'))}")  # Assuming `customers` is a list in CustomerManager
             elif choice == "3":
