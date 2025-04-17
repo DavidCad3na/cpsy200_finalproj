@@ -1,19 +1,19 @@
 #Connor Yasinski
-
+import RentalManager
 from db_manager import DatabaseManager
 from CustomerManager import CustomerManager
 from RentalEquipmentList import RentalEquipmentList
 from RentalManager import RentalManager
 from CategoryList import CategoryList
 
-class ReportCompilor:
+#Class Might need additional options
     def __init__(self):
         self.db = DatabaseManager()
         self.category_list = CategoryList(self.db)  # Initialize CategoryList
         self.customer_manager = CustomerManager(self.db)
         self.rental_equipment_list = RentalEquipmentList(self.db)  # Initialize RentalEquipmentList first (Must be in this order)
         self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
-
+            "customer_info": self.generateCustomerInfoReport
    #Maybe add a function to search the database
 
     def reportByDate(self):
@@ -45,7 +45,7 @@ class ReportCompilor:
         print("\n=== Rentals Report by Customer ===")
         for rental in results:
             print(f"Rental ID: {rental[0]}, Customer ID: {rental[1]}, Equipment ID: {rental[2]}, Rental Date: {rental[3]}, Return Date: {rental[4]}")
-
+                  f"Daily Rental Cost: ${equipment['dailyRentalCost']:.2f}, "
     def reportEquipmentByCategory(self):
         #Generates a report of rentals by equipment category.
         query = """
@@ -61,4 +61,5 @@ class ReportCompilor:
         for rental in results:
             print(f"Rental ID: {rental[0]}, Customer ID: {rental[1]}, Equipment ID: {rental[2]}, Rental Date: {rental[3]}, Return Date: {rental[4]}")
             
+                
     

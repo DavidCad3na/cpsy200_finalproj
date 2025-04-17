@@ -9,22 +9,14 @@ from CategoryList import CategoryList
 
 class UserInterface:
     def __init__(self):
-        # Creating instances of the necessary classes
         self.db = DatabaseManager()
-        self.category_list = CategoryList(self.db)  # Initialize CategoryList
+        self.category_list = CategoryList(self.db)
         self.customer_manager = CustomerManager(self.db)
-        self.rental_equipment_list = RentalEquipmentList(self.db, self.rental_equipment_list)  # Initialize RentalEquipmentList first (Must be in this order)
-        self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
-        self.report_compilor = ReportCompilor()
-        
-        
-        
-    
+        self.rental_equipment_list = RentalEquipmentList(self.db)
+        self.rental_manager = RentalManager(self.db, self.rental_equipment_list)
+        self.report_compilor = ReportCompilor(self.db)
+
     def systemManager(self):
-        """
-        This method is responsible for managing the system.
-        It includes options to reset data, view system status, or perform administrative tasks.
-        """
         while True:
             print("\n=== System Manager ===")
             print("1. Reset Inventory Data")
@@ -36,35 +28,29 @@ class UserInterface:
             if choice == "1":
                 confirm = input("Are you sure you want to reset all inventory data? (yes/no): ").strip().lower()
                 if confirm == "yes":
-                    self.rental_equipment_list.rentalEquipmentList.clear()
+                    query = "DELETE FROM rental_equipment"
+                    self.db.execute_query(query)
                     print("All inventory data has been reset.")
                 else:
                     print("Reset operation canceled.")
             elif choice == "2":
                 print("\n=== System Status ===")
                 print(f"Total Equipment in Inventory: {len(self.db.fetch_query('SELECT * FROM rental_equipment'))}")
-                print(f"Total Rentals: {len(self.db.fetch_query('SELECT * FROM rentals'))}")                
-                print(f"Total Customers: {len(self.db.fetch_query('SELECT * FROM customers'))}")  # Assuming `customers` is a list in CustomerManager
+                print(f"Total Rentals: {len(self.db.fetch_query('SELECT * FROM rentals'))}")
+                print(f"Total Customers: {len(self.db.fetch_query('SELECT * FROM customers'))}")
             elif choice == "3":
-                print("Returning to Main Menu.")
                 break
             else:
                 print("Invalid choice. Please try again.")
-    
-    
-    
+
     def manageInventory(self):
-        """
-        This method is responsible for managing the inventory.
-        It includes options to view, add, remove, or update items in the inventory.
-        """
         while True:
             print("\n=== Manage Inventory ===")
             print("1. View Inventory")
             print("2. Add New Equipment")
             print("3. Remove Equipment")
             print("4. Update Equipment Availability")
-            print("5. Manage Equipemnt Categories")
+            print("5. Manage Equipment Categories")
             print("6. Back to Main Menu")
 
             choice = input("Enter your choice: ")
@@ -75,10 +61,12 @@ class UserInterface:
                 equipment_id = input("Enter Equipment ID: ")
                 name = input("Enter Equipment Name: ")
                 available = input("Is the equipment available? (yes/no): ").strip().lower() == "yes"
+                category_id = input("Enter Category ID: ")
                 self.rental_equipment_list.addRentalEquipment({
                     'equipmentId': equipment_id,
                     'name': name,
-                    'available': available
+                    'available': available,
+                    'categoryId': category_id
                 })
             elif choice == "3":
                 equipment_id = input("Enter Equipment ID to remove: ")
@@ -91,39 +79,37 @@ class UserInterface:
                 else:
                     self.rental_equipment_list.markAsRented(equipment_id)
             elif choice == "5":
-                print("\n=== Manage Equipment Categories ===")
-                print("1. View Categories")
-                print("2. Add Category")
-                print("3. Remove Category")
-                print("4. Back to Inventory Menu")
-                category_choice = input("Enter your choice: ")
-                if category_choice == "1":
-                    self.category_list.viewCategory()
-                elif category_choice == "2":
-                    category_id = input("Enter Category ID: ")
-                    category_name = input("Enter Category Name: ")
-                    self.category_list.addCategory(category_id, category_name)
-                elif category_choice == "3":
-                    category_id = input("Enter Category ID to remove: ")
-                    self.category_list.removeCategory(category_id)
-                elif category_choice == "4":
-                    print("Returning to Inventory Menu.")
-                    continue
-                else:
-                    print("Invalid choice. Please try again.")
+                self.manageCategories()
             elif choice == "6":
-                print("Returning to Main Menu.")
                 break
             else:
                 print("Invalid choice. Please try again.")
-    
-    
-    
+
+    def manageCategories(self):
+        while True:
+            print("\n=== Manage Equipment Categories ===")
+            print("1. View Categories")
+            print("2. Add Category")
+            print("3. Remove Category")
+            print("4. Back to Inventory Menu")
+
+            choice = input("Enter your choice: ")
+
+            if choice == "1":
+                self.category_list.viewCategory()
+            elif choice == "2":
+                category_id = input("Enter Category ID: ")
+                category_name = input("Enter Category Name: ")
+                self.category_list.addCategory(category_id, category_name)
+            elif choice == "3":
+                category_id = input("Enter Category ID to remove: ")
+                self.category_list.removeCategory(category_id)
+            elif choice == "4":
+                break
+            else:
+                print("Invalid choice. Please try again.")
+
     def equipmentRental(self):
-        """
-        This method is responsible for managing equipment rentals.
-        It includes options to rent, return, or view rented equipment.
-        """
         while True:
             print("\n=== Equipment Rental ===")
             print("1. Rent Equipment")
@@ -151,18 +137,11 @@ class UserInterface:
                 rental_id = input("Enter Rental ID to calculate cost: ")
                 self.rental_manager.calculateRental(rental_id)
             elif choice == "5":
-                print("Returning to Main Menu.")
                 break
             else:
                 print("Invalid choice. Please try again.")
-        
-    
-    
+
     def manageCustomerInfo(self):
-        """
-        This method is responsible for managing customer information.
-        It includes options to view, add, remove, or update customer information.
-        """
         while True:
             print("\n=== Manage Customer Info ===")
             print("1. View Customer Information")
@@ -190,18 +169,11 @@ class UserInterface:
                 customerId = input("Enter Customer ID to update: ")
                 self.customer_manager.editCustomerDetails(customerId)
             elif choice == "5":
-                print("Returning to Main Menu.")
                 break
             else:
                 print("Invalid choice. Please try again.")
-                
-    
-    
+
     def generateReports(self):
-        """
-        This method is responsible for generating reports.
-        It includes options to view rental history, inventory status, and customer information.
-        """
         while True:
             print("\n=== Generate Reports ===")
             print("1. Report by Date")
@@ -222,14 +194,8 @@ class UserInterface:
                 break
             else:
                 print("Invalid choice. Please try again.")
-                
-                
-        
+
     def displayMenu(self):
-        """
-        This method displays the main menu of the application.
-        It includes options to navigate to different sections of the application.
-        """
         while True:
             print("\n=== Main Menu ===")
             print("1. System Manager")
@@ -240,7 +206,6 @@ class UserInterface:
             print("6. Exit")
 
             choice = input("Enter your choice: ")
-            # print(f"DEBUG: User selected option {choice}") (In the case option selection starts buggin try this)
 
             if choice == "1":
                 self.systemManager()
@@ -257,10 +222,7 @@ class UserInterface:
                 break
             else:
                 print("Invalid choice. Please try again.")
-                
-                
 
-# Entry point for the program
 if __name__ == "__main__":
     ui = UserInterface()
     try:
