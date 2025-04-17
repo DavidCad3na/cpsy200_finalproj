@@ -191,6 +191,7 @@ class UserInterface:
                 self.report_compilor.reportEquipmentByCategory()
             elif choice == "4":
                 print("Returning to Main Menu.")
+            elif choice == "5":
                 break
             else:
                 print("Invalid choice. Please try again.")
