@@ -16,7 +16,6 @@ class RentalManager:
         print(f"Rental with ID {rentalId} added successfully.")
 
     def endRental(self, rentalId, returnDate):
-        # Fetch rentalStartDate and dailyRentalCost for calculation
         query = "SELECT rentalStartDate, dailyRentalCost FROM rentals WHERE rentalId = %s"
         result = self.db.fetch_query(query, (rentalId,))
 
@@ -25,7 +24,6 @@ class RentalManager:
             return
 
         rentalStartDate, dailyRentalCost = result[0]
-        rentalStartDate = rentalStartDate  # datetime from DB
         returnDate_obj = datetime.strptime(returnDate, "%Y-%m-%d")
         daysRented = (returnDate_obj - rentalStartDate).days
         finalRentalCost = daysRented * dailyRentalCost
