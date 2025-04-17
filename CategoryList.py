@@ -1,28 +1,24 @@
 # Connor Yasinski
-import mysql.connector
 
 class CategoryList:
-    def __init__(self, db_connection):
-        self.db_connection = db_connection
+    def __init__(self, db):
+        self.db = db
 
-    def view_category(self, category_id):
-        cursor = self.db_connection.cursor(dictionary=True)
+    def viewCategory(self, category_id):
         query = "SELECT * FROM categories WHERE id = %s"
-        cursor.execute(query, (category_id,))
-        result = cursor.fetchone()
-        cursor.close()
-        return result
+        result = self.db.fetch_query(query, (category_id,))
+        if result:
+            return result[0]  # Return the first matching category
+        else:
+            print(f"No category found with ID {category_id}.")
+            return None
 
-    def add_category(self, category_id, category_name):
-        cursor = self.db_connection.cursor()
+    def addCategory(self, category_id, category_name):
         query = "INSERT INTO categories (id, name) VALUES (%s, %s)"
-        cursor.execute(query, (category_id, category_name))
-        self.db_connection.commit()
-        cursor.close()
+        self.db.execute_query(query, (category_id, category_name))
+        print(f"Category '{category_name}' with ID {category_id} added successfully.")
 
-    def remove_category(self, category_id):
-        cursor = self.db_connection.cursor()
+    def removeCategory(self, category_id):
         query = "DELETE FROM categories WHERE id = %s"
-        cursor.execute(query, (category_id,))
-        self.db_connection.commit()
-        cursor.close()
+        self.db.execute_query(query, (category_id,))
+        print(f"Category with ID {category_id} removed successfully.")
