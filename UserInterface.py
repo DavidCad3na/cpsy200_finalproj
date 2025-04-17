@@ -12,12 +12,13 @@ class UserInterface:
     def __init__(self):
         # Creating instances of the necessary classes
         self.db = DatabaseManager()
-        self.report_compilor = ReportCompilor()
+        self.category_list = CategoryList(self.db)  # Initialize CategoryList
         self.customer_manager = CustomerManager(self.db)
         self.rental_equipment_list = RentalEquipmentList()  # Initialize RentalEquipmentList first (Must be in this order)
         self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
         self.rental_equipment = RentalEquipment()
-        self.categorylist = CategoryList(self.db)  # Initialize CategoryList
+        self.report_compilor = ReportCompilor()
+        
         
         
     
@@ -99,14 +100,14 @@ class UserInterface:
                 print("4. Back to Inventory Menu")
                 category_choice = input("Enter your choice: ")
                 if category_choice == "1":
-                    self.categorylist.view_category()
+                    self.category_list.view_category()
                 elif category_choice == "2":
                     category_id = input("Enter Category ID: ")
                     category_name = input("Enter Category Name: ")
-                    self.categorylist.add_category(category_id, category_name)
+                    self.category_list.add_category(category_id, category_name)
                 elif category_choice == "3":
                     category_id = input("Enter Category ID to remove: ")
-                    self.categorylist.remove_category(category_id)
+                    self.category_list.remove_category(category_id)
                 elif category_choice == "4":
                     print("Returning to Inventory Menu.")
                     continue
