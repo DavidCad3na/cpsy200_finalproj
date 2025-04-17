@@ -6,6 +6,7 @@ from RentalEquipment import RentalEquipment
 from RentalEquipmentList import RentalEquipmentList
 from RentalManager import RentalManager
 from ReportCompilor import ReportCompilor
+from CategoryList import CategoryList
 
 class UserInterface:
     def __init__(self):
@@ -97,14 +98,14 @@ class UserInterface:
                 print("4. Back to Inventory Menu")
                 category_choice = input("Enter your choice: ")
                 if category_choice == "1":
-                    self.rental_equipment.viewCategory()
+                    self.CategoryList.viewCategory()
                 elif category_choice == "2":
                     category_id = input("Enter Category ID: ")
                     category_name = input("Enter Category Name: ")
-                    self.rental_equipment.addCategory(category_id, category_name)
+                    self.CategoryList.addCategory(category_id, category_name)
                 elif category_choice == "3":
                     category_id = input("Enter Category ID to remove: ")
-                    self.rental_equipment.removeCategory(category_id)
+                    self.CategoryList.removeCategory(category_id)
                 elif category_choice == "4":
                     print("Returning to Inventory Menu.")
                     continue
