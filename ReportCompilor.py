@@ -1,5 +1,8 @@
+#Connor Yasinski
 import RentalManager
 import RentalEquipmentList
+
+#Class Might need additional options
 
 class ReportCompilor:
     def __init__(self):
@@ -8,6 +11,7 @@ class ReportCompilor:
             "inventory_status": self.generateInventoryStatusReport,
             "customer_info": self.generateCustomerInfoReport
         }
+
     
     def generateRentalHistoryReport(self):
         print("Generating Rental History Report...")
