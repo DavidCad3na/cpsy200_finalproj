@@ -184,14 +184,12 @@ class UserInterface:
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                self.report_compilor.reportByDate() # Will need to pass once func is created
+                self.report_compilor.reportByDate()
             elif choice == "2":
                 self.report_compilor.reportByCustomer()
             elif choice == "3":
                 self.report_compilor.reportEquipmentByCategory()
             elif choice == "4":
-                print("Returning to Main Menu.")
-            elif choice == "5":
                 break
             else:
                 print("Invalid choice. Please try again.")

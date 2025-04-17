@@ -1,63 +1,55 @@
-
-#Connor Yasinski
-
-from db_manager import DatabaseManager
-from CustomerManager import CustomerManager
-from RentalEquipmentList import RentalEquipmentList
-from RentalManager import RentalManager
-from CategoryList import CategoryList
-
 class ReportCompilor:
-    def __init__(self):
-        self.db = DatabaseManager()
-        self.category_list = CategoryList(self.db)  # Initialize CategoryList
-        self.customer_manager = CustomerManager(self.db)
-        self.rental_equipment_list = RentalEquipmentList(self.db)  # Initialize RentalEquipmentList first (Must be in this order)
-        self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
-
-   #Maybe add a function to search the database
+    def __init__(self, db):
+        self.db = db
 
     def reportByDate(self):
-        #Generates a report of rentals by date.
+        # Generates a report of rentals by date
         query = """
-        SELECT rentalId, customerId, equipmentId, rentalDate, returnDate
+        SELECT rentalId, customer, equipment, rentalStartDate, returnDate
         FROM rentals
-        ORDER BY rentalDate DESC
+        ORDER BY rentalStartDate DESC
         """
         results = self.db.fetch_query(query)
         if not results:
             print("No rentals found.")
             return
+
         print("\n=== Rentals Report by Date ===")
         for rental in results:
-            print(f"Rental ID: {rental[0]}, Customer ID: {rental[1]}, Equipment ID: {rental[2]}, Rental Date: {rental[3]}, Return Date: {rental[4]}")
+            print(f"Rental ID: {rental[0]}, Customer: {rental[1]}, Equipment: {rental[2]}, "
+                  f"Rental Date: {rental[3]}, Return Date: {rental[4]}")
 
     def reportByCustomer(self):
-        #Generates a report of rentals by customer.
+        # Generates a report of rentals by customer
         query = """
-        SELECT rentalId, customerId, equipmentId, rentalDate, returnDate
+        SELECT rentalId, customer, equipment, rentalStartDate, returnDate
         FROM rentals
-        ORDER BY customerId
+        ORDER BY customer
         """
         results = self.db.fetch_query(query)
         if not results:
             print("No rentals found.")
             return
+
         print("\n=== Rentals Report by Customer ===")
         for rental in results:
-            print(f"Rental ID: {rental[0]}, Customer ID: {rental[1]}, Equipment ID: {rental[2]}, Rental Date: {rental[3]}, Return Date: {rental[4]}")
+            print(f"Rental ID: {rental[0]}, Customer: {rental[1]}, Equipment: {rental[2]}, "
+                  f"Rental Date: {rental[3]}, Return Date: {rental[4]}")
 
     def reportEquipmentByCategory(self):
-        #Generates a report of rentals by equipment category.
+        # Generates a report of equipment grouped by category
         query = """
-        SELECT rentalId, customerId, equipmentId, rentalDate, returnDate
-        FROM rentals
-        ORDER BY equipmentId
+        SELECT re.equipmentId, re.name, c.category_name
+        FROM rental_equipment re
+        LEFT JOIN categories c ON re.categoryId = c.categoryId
+        ORDER BY c.category_name
         """
         results = self.db.fetch_query(query)
         if not results:
-            print("No rentals found.")
+            print("No equipment found.")
             return
-        print("\n=== Rentals Report by Equipment Category ===")
-        for rental in results:
-            print(f"Rental ID: {rental[0]}, Customer ID: {rental[1]}, Equipment ID: {rental[2]}, Rental Date: {rental[3]}, Return Date: {rental[4]}")
+
+        print("\n=== Equipment Report by Category ===")
+        for equipment in results:
+            equipmentId, name, category_name = equipment
+            print(f"Equipment ID: {equipmentId}, Name: {name}, Category: {category_name if category_name else 'Uncategorized'}")
