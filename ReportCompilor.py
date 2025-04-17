@@ -1,41 +1,64 @@
 #Connor Yasinski
-import RentalManager
-import RentalEquipmentList
 
-#Class Might need additional options
+from db_manager import DatabaseManager
+from CustomerManager import CustomerManager
+from RentalEquipmentList import RentalEquipmentList
+from RentalManager import RentalManager
+from CategoryList import CategoryList
 
 class ReportCompilor:
     def __init__(self):
-        self.report_types = {
-            "rental_history": self.generateRentalHistoryReport,
-            "inventory_status": self.generateInventoryStatusReport,
-            "customer_info": self.generateCustomerInfoReport
-        }
+        self.db = DatabaseManager()
+        self.category_list = CategoryList(self.db)  # Initialize CategoryList
+        self.customer_manager = CustomerManager(self.db)
+        self.rental_equipment_list = RentalEquipmentList(self.db)  # Initialize RentalEquipmentList first (Must be in this order)
+        self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
 
-    
-    def generateRentalHistoryReport(self):
-        print("Generating Rental History Report...")
-        for rental in RentalManager.rentals:
-            print(f"Rental ID: {rental['rentalId']}, Customer: {rental['customer']}, "
-                  f"Equipment: {rental['equipment']}, Start Date: {rental['rentalStartDate'].strftime('%Y-%m-%d')}, "
-                  f"Return Date: {rental['returnDate'].strftime('%Y-%m-%d') if rental['returnDate'] else 'N/A'}, "
-                  f"Daily Cost: ${rental['dailyrentalCost']:.2f}, "
-                  f"Final Cost: ${rental['finalrentalCost'] if rental['finalrentalCost'] else 'N/A'}")
-        
+   #Maybe add a function to search the database
 
-    def generateInventoryStatusReport(self):
-        print("Generating Inventory Status Report...")
-        for equipment in RentalEquipmentList.rentalEquipmentList:
-            print(f"Equipment ID: {equipment['equipmentId']}, Name: {equipment['name']}, "
-                  f"Category: {equipment['category']}, Status: {equipment['status']}, "
-                  f"Daily Rental Cost: ${equipment['dailyRentalCost']:.2f}, "
-                  f"Quantity Available: {equipment['quantityAvailable']}")
+    def reportByDate(self):
+        #Generates a report of rentals by date.
+        query = """
+        SELECT rentalId, customerId, equipmentId, rentalDate, returnDate
+        FROM rentals
+        ORDER BY rentalDate DESC
+        """
+        results = self.db.fetch_query(query)
+        if not results:
+            print("No rentals found.")
+            return
+        print("\n=== Rentals Report by Date ===")
+        for rental in results:
+            print(f"Rental ID: {rental[0]}, Customer ID: {rental[1]}, Equipment ID: {rental[2]}, Rental Date: {rental[3]}, Return Date: {rental[4]}")
 
-    def generateCustomerInfoReport(self):
-        print("Generating Customer Information Report...")
-        for customer in RentalManager.customers:
-            print(f"Customer ID: {customer['customerId']}, Name: {customer['name']}, "
-                  f"Email: {customer['email']}, Phone: {customer['phone']}, "
-                  f"Rental History: {len(customer['rentalHistory'])} rentals")
+    def reportByCustomer(self):
+        #Generates a report of rentals by customer.
+        query = """
+        SELECT rentalId, customerId, equipmentId, rentalDate, returnDate
+        FROM rentals
+        ORDER BY customerId
+        """
+        results = self.db.fetch_query(query)
+        if not results:
+            print("No rentals found.")
+            return
+        print("\n=== Rentals Report by Customer ===")
+        for rental in results:
+            print(f"Rental ID: {rental[0]}, Customer ID: {rental[1]}, Equipment ID: {rental[2]}, Rental Date: {rental[3]}, Return Date: {rental[4]}")
+
+    def reportEquipmentByCategory(self):
+        #Generates a report of rentals by equipment category.
+        query = """
+        SELECT rentalId, customerId, equipmentId, rentalDate, returnDate
+        FROM rentals
+        ORDER BY equipmentId
+        """
+        results = self.db.fetch_query(query)
+        if not results:
+            print("No rentals found.")
+            return
+        print("\n=== Rentals Report by Equipment Category ===")
+        for rental in results:
+            print(f"Rental ID: {rental[0]}, Customer ID: {rental[1]}, Equipment ID: {rental[2]}, Rental Date: {rental[3]}, Return Date: {rental[4]}")
             
     
