@@ -17,6 +17,7 @@ class UserInterface:
         self.rental_equipment_list = RentalEquipmentList()  # Initialize RentalEquipmentList first (Must be in this order)
         self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
         self.rental_equipment = RentalEquipment()
+        self.categorylist = CategoryList(self.db)  # Initialize CategoryList
         
         
     
@@ -98,14 +99,14 @@ class UserInterface:
                 print("4. Back to Inventory Menu")
                 category_choice = input("Enter your choice: ")
                 if category_choice == "1":
-                    self.CategoryList.viewCategory()
+                    self.categorylist.viewCategory()
                 elif category_choice == "2":
                     category_id = input("Enter Category ID: ")
                     category_name = input("Enter Category Name: ")
-                    self.CategoryList.addCategory(category_id, category_name)
+                    self.categorylist.addCategory(category_id, category_name)
                 elif category_choice == "3":
                     category_id = input("Enter Category ID to remove: ")
-                    self.CategoryList.removeCategory(category_id)
+                    self.categorylist.removeCategory(category_id)
                 elif category_choice == "4":
                     print("Returning to Inventory Menu.")
                     continue
