@@ -100,14 +100,14 @@ class UserInterface:
                 print("4. Back to Inventory Menu")
                 category_choice = input("Enter your choice: ")
                 if category_choice == "1":
-                    self.category_list.view_category()
+                    self.category_list.viewCategory()
                 elif category_choice == "2":
                     category_id = input("Enter Category ID: ")
                     category_name = input("Enter Category Name: ")
-                    self.category_list.add_category(category_id, category_name)
+                    self.category_list.addCategory(category_id, category_name)
                 elif category_choice == "3":
                     category_id = input("Enter Category ID to remove: ")
-                    self.category_list.remove_category(category_id)
+                    self.category_list.removeCategory(category_id)
                 elif category_choice == "4":
                     print("Returning to Inventory Menu.")
                     continue
