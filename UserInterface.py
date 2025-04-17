@@ -2,7 +2,6 @@
 
 from db_manager import DatabaseManager
 from CustomerManager import CustomerManager
-from RentalEquipment import RentalEquipment
 from RentalEquipmentList import RentalEquipmentList
 from RentalManager import RentalManager
 from ReportCompilor import ReportCompilor
@@ -16,7 +15,6 @@ class UserInterface:
         self.customer_manager = CustomerManager(self.db)
         self.rental_equipment_list = RentalEquipmentList(self.db)  # Initialize RentalEquipmentList first (Must be in this order)
         self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
-        self.rental_equipment = RentalEquipment()
         self.report_compilor = ReportCompilor()
         
         
