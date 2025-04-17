@@ -204,20 +204,23 @@ class UserInterface:
         """
         while True:
             print("\n=== Generate Reports ===")
-            print("1. Rental History Report")
-            print("2. Inventory Status Report")
-            print("3. Customer Information Report")
-            print("4. Back to Main Menu")
+            print("1. Customer Report")
+            print("2. Category Report")
+            print("3. Equipment Report")
+            print("4. Rental Report")
+            print("5. Back to Main Menu")
 
             choice = input("Enter your choice: ")
 
             if choice == "1":
-                self.report_compilor.generateRentalHistoryReport()
+                self.report_compilor.generateCustomerReport() # Will need to pass once func is created
             elif choice == "2":
-                self.report_compilor.generateInventoryStatusReport()
+                self.report_compilor.generateCategoryReport()
             elif choice == "3":
-                self.report_compilor.generateCustomerInfoReport()
+                self.report_compilor.generateEquipmentReport()
             elif choice == "4":
+                self.report_compilor.generateRentalReport()
+            elif choice == "5":
                 print("Returning to Main Menu.")
                 break
             else:
