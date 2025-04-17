@@ -13,7 +13,7 @@ class UserInterface:
         self.db = DatabaseManager()
         self.category_list = CategoryList(self.db)  # Initialize CategoryList
         self.customer_manager = CustomerManager(self.db)
-        self.rental_equipment_list = RentalEquipmentList(self.db)  # Initialize RentalEquipmentList first (Must be in this order)
+        self.rental_equipment_list = RentalEquipmentList(self.db, self.rental_equipment_list)  # Initialize RentalEquipmentList first (Must be in this order)
         self.rental_manager = RentalManager(self.rental_equipment_list)  # Pass it to RentalManager (For these 2)
         self.report_compilor = ReportCompilor()
         
