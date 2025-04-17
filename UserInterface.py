@@ -63,7 +63,8 @@ class UserInterface:
             print("2. Add New Equipment")
             print("3. Remove Equipment")
             print("4. Update Equipment Availability")
-            print("5. Back to Main Menu")
+            print("5. Manage Equipemnt Categories")
+            print("6. Back to Main Menu")
 
             choice = input("Enter your choice: ")
 
@@ -89,6 +90,27 @@ class UserInterface:
                 else:
                     self.rental_equipment_list.markAsRented(equipment_id)
             elif choice == "5":
+                print("\n=== Manage Equipment Categories ===")
+                print("1. View Categories")
+                print("2. Add Category")
+                print("3. Remove Category")
+                print("4. Back to Inventory Menu")
+                category_choice = input("Enter your choice: ")
+                if category_choice == "1":
+                    self.rental_equipment.viewCategory()
+                elif category_choice == "2":
+                    category_id = input("Enter Category ID: ")
+                    category_name = input("Enter Category Name: ")
+                    self.rental_equipment.addCategory(category_id, category_name)
+                elif category_choice == "3":
+                    category_id = input("Enter Category ID to remove: ")
+                    self.rental_equipment.removeCategory(category_id)
+                elif category_choice == "4":
+                    print("Returning to Inventory Menu.")
+                    continue
+                else:
+                    print("Invalid choice. Please try again.")
+            elif choice == "6":
                 print("Returning to Main Menu.")
                 break
             else:

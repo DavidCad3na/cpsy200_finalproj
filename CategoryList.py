@@ -1,7 +1,6 @@
 # Connor Yasinski
 import mysql.connector
 
-#Refrences a table that doesn't exist yet
 class CategoryList:
     def __init__(self, db_connection):
         self.db_connection = db_connection
