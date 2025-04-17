@@ -24,7 +24,15 @@ class RentalManager:
             return
 
         rentalStartDate, dailyRentalCost = result[0]
-        returnDate_obj = datetime.strptime(returnDate, "%Y-%m-%d")
+
+        # Ensure rentalStartDate is a datetime.date object
+        if isinstance(rentalStartDate, datetime):
+            rentalStartDate = rentalStartDate.date()
+
+        # Convert returnDate to a datetime.date object
+        returnDate_obj = datetime.strptime(returnDate, "%Y-%m-%d").date()
+
+        # Calculate the number of days rented
         daysRented = (returnDate_obj - rentalStartDate).days
         finalRentalCost = daysRented * dailyRentalCost
 
