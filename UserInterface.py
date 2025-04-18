@@ -60,14 +60,13 @@ class UserInterface:
             elif choice == "2":
                 equipment_id = input("Enter Equipment ID: ")
                 name = input("Enter Equipment Name: ")
-                available = input("Is the equipment available? (yes/no): ").strip().lower() == "yes"
                 category_id = input("Enter Category ID: ")
                 self.rental_equipment_list.addRentalEquipment({
                     'equipmentId': equipment_id,
                     'name': name,
-                    'available': available,
                     'categoryId': category_id
                 })
+                self.rental_equipment_list.markAsReturned(equipment_id)
             elif choice == "3":
                 equipment_id = input("Enter Equipment ID to remove: ")
                 self.rental_equipment_list.removeRentalEquipment(equipment_id)
@@ -113,30 +112,26 @@ class UserInterface:
         while True:
             print("\n=== Equipment Rental ===")
             print("1. Rent Equipment")
-            print("2. Return Equipment")
-            print("3. View Rented Equipment")
-            print("4. Calculate Rental Cost")
-            print("5. Back to Main Menu")
+            print("2. View Rented Equipment")
+            print("3. Calculate Rental Cost")
+            print("4. Back to Main Menu")
 
             choice = input("Enter your choice: ")
 
             if choice == "1":
                 rental_id = input("Enter Rental ID: ")
                 rental_start_date = input("Enter Rental Start Date (YYYY-MM-DD): ")
-                customer = input("Enter Customer Name: ")
-                equipment = input("Enter Equipment Name: ")
+                days_rented = input("Enter rental length in days: ")
+                customer = input("Enter Customer Id: ")
+                equipment = input("Enter Equipment Id: ")
                 daily_rental_cost = input("Enter Daily Rental Cost: ")
-                self.rental_manager.addRental(rental_id, rental_start_date, customer, equipment, daily_rental_cost)
+                self.rental_manager.addRental(rental_id, rental_start_date, days_rented, customer, equipment, daily_rental_cost)
             elif choice == "2":
-                rental_id = input("Enter Rental ID to return: ")
-                return_date = input("Enter Return Date (YYYY-MM-DD): ")
-                self.rental_manager.endRental(rental_id, return_date)
-            elif choice == "3":
                 self.rental_manager.viewRentals()
-            elif choice == "4":
+            elif choice == "3":
                 rental_id = input("Enter Rental ID to calculate cost: ")
                 self.rental_manager.calculateRental(rental_id)
-            elif choice == "5":
+            elif choice == "4":
                 break
             else:
                 print("Invalid choice. Please try again.")

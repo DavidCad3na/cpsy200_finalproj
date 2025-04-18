@@ -6,13 +6,12 @@ class RentalEquipmentList:
 
     def addRentalEquipment(self, equipment):
         query = """
-        INSERT INTO rental_equipment (equipmentId, name, available, categoryId)
-        VALUES (%s, %s, %s, %s)
+        INSERT INTO rental_equipment (equipmentId, name, categoryId)
+        VALUES (%s, %s, %s)
         """
         self.db.execute_query(query, (
             equipment['equipmentId'],
             equipment['name'],
-            equipment['available'],
             equipment['categoryId'] 
         ))
         print(f"Equipment {equipment['name']} with ID {equipment['equipmentId']} added successfully.")
