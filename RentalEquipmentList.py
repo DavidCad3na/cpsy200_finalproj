@@ -12,7 +12,6 @@ class RentalEquipmentList:
         self.db.execute_query(query, (
             equipment['equipmentId'],
             equipment['name'],
-            equipment['available'],
             equipment['categoryId'] 
         ))
         print(f"Equipment {equipment['name']} with ID {equipment['equipmentId']} added successfully.")

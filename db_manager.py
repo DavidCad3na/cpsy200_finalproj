@@ -4,9 +4,9 @@ class DatabaseManager:
     def __init__(self):
         self.connection = mysql.connector.connect(
             host="sql5.freesqldatabase.com",
-            user="sql5773273",
-            password="7c98kZDGKx",
-            database="sql5773273",
+            user="sql5774058",
+            password="XBU2HIAPdI",
+            database="sql5774058",
             port=3306
         )
         self.cursor = self.connection.cursor()

@@ -1,5 +1,3 @@
-# Connor Yasinski
-
 class CategoryList:
     def __init__(self, db):
         self.db = db

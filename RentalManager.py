@@ -8,12 +8,14 @@ class RentalManager:
         self.db = db
         self.equipment_list = equipment_list
 
-    def addRental(self, rentalId, rentalStartDate, customer, equipment_id,rentalCost):
+    def addRental(self, rentalId, startDate, daysRented, customerId, equipmentId, dailyRentalCost):
+        finalRentalCost =  float(dailyRentalCost) * int(daysRented)
+        
         query = """
-        INSERT INTO rentals (rentalId, rentalStartDate, customer, equipment_id, rentalCost)
-        VALUES (%s, %s, %s, %s, %s)
+        INSERT INTO rentals (rentalId, startDate, daysRented, customerId, equipmentId, dailyRentalCost, finalRentalCost)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
-        self.db.execute_query(query, (rentalId, rentalStartDate, customer, equipment_id,float(rentalCost)))
+        self.db.execute_query(query, (rentalId, startDate, daysRented, customerId, equipmentId, float(dailyRentalCost), finalRentalCost))
         if RentalEquipmentList.isEquipmentAvailable(self, equipment_id):
             RentalEquipmentList.markAsRented(self, equipment_id)
             print(f"Rental with ID {rentalId} added successfully.")
@@ -67,29 +69,22 @@ class RentalManager:
         else:
             print("\n=== Current Rentals ===")
             for rental in rentals:
-                rentalId, rentalStartDate, returnDate, customer, equipment, dailyRentalCost, finalRentalCost = rental
-                print(f"Rental ID: {rentalId}, Customer: {customer}, Equipment: {equipment}, "
-                      f"Start Date: {rentalStartDate.strftime('%Y-%m-%d') if rentalStartDate else 'N/A'}, "
-                      f"Return Date: {returnDate.strftime('%Y-%m-%d') if returnDate else 'N/A'}, "
+                rentalId, startDate, daysRented, customerId, equipmentId, dailyRentalCost, finalRentalCost = rental
+                print(f"Rental ID: {rentalId}, Customer ID: {customerId}, Equipment ID: {equipmentId}, "
+                      f"Start Date: {startDate.strftime('%Y-%m-%d') if startDate else 'N/A'}, "
+                      f"Days Rented: {daysRented if daysRented is not None else 'N/A'}, "
                       f"Daily Cost: ${dailyRentalCost:.2f}, "
                       f"Final Cost: ${finalRentalCost if finalRentalCost is not None else 'N/A'}")
 
     def calculateRental(self, rentalId):
-        query = "SELECT rentalStartDate, returnDate, dailyRentalCost FROM rentals WHERE rentalId = %s"
+        query = "SELECT finalRentalCost FROM rentals WHERE rentalId = %s"
         result = self.db.fetch_query(query, (rentalId,))
 
         if not result:
             print(f"No rental found with ID {rentalId}.")
             return None
 
-        rentalStartDate, returnDate, dailyRentalCost = result[0]
-
-        if returnDate is None:
-            print(f"Rental ID {rentalId} has not been returned yet.")
-            return None
-
-        daysRented = (returnDate - rentalStartDate).days
-        finalRentalCost = daysRented * dailyRentalCost
+        finalRentalCost = result[0][0]
 
         print(f"Rental ID {rentalId} calculated. Final cost: ${finalRentalCost:.2f}")
         return finalRentalCost

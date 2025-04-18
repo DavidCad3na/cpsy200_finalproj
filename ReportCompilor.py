@@ -1,13 +1,15 @@
+from datetime import timedelta
+
 class ReportCompilor:
     def __init__(self, db):
         self.db = db
 
     def reportByDate(self):
-        # Generates a report of rentals by date
+        # Generates a report of rentals by start date
         query = """
-        SELECT rentalId, customer, equipment, rentalStartDate, returnDate
+        SELECT rentalId, customerId, equipmentId, startDate, daysRented
         FROM rentals
-        ORDER BY rentalStartDate DESC
+        ORDER BY startDate DESC
         """
         results = self.db.fetch_query(query)
         if not results:
@@ -16,15 +18,17 @@ class ReportCompilor:
 
         print("\n=== Rentals Report by Date ===")
         for rental in results:
-            print(f"Rental ID: {rental[0]}, Customer: {rental[1]}, Equipment: {rental[2]}, "
-                  f"Rental Date: {rental[3]}, Return Date: {rental[4]}")
+            rentalId, customerId, equipmentId, startDate, daysRented = rental
+            return_date = startDate + timedelta(days=daysRented) if startDate and daysRented else "N/A"
+            print(f"Rental ID: {rentalId}, Customer ID: {customerId}, Equipment ID: {equipmentId}, "
+                  f"Start Date: {startDate.strftime('%Y-%m-%d') if startDate else 'N/A'}, "
+                  f"Days Rented: {daysRented if daysRented is not None else 'N/A'}")
 
     def reportByCustomer(self):
-        # Generates a report of rentals by customer
         query = """
-        SELECT rentalId, customer, equipment, rentalStartDate, returnDate
+        SELECT rentalId, customerId, equipmentId, startDate, daysRented
         FROM rentals
-        ORDER BY customer
+        ORDER BY customerId
         """
         results = self.db.fetch_query(query)
         if not results:
@@ -33,8 +37,11 @@ class ReportCompilor:
 
         print("\n=== Rentals Report by Customer ===")
         for rental in results:
-            print(f"Rental ID: {rental[0]}, Customer: {rental[1]}, Equipment: {rental[2]}, "
-                  f"Rental Date: {rental[3]}, Return Date: {rental[4]}")
+            rentalId, customerId, equipmentId, startDate, daysRented = rental
+            print(f"Rental ID: {rentalId}, Customer ID: {customerId}, Equipment ID: {equipmentId}, "
+                f"Start Date: {startDate.strftime('%Y-%m-%d') if startDate else 'N/A'}, "
+                f"Days Rented: {daysRented if daysRented is not None else 'N/A'}")
+
 
     def reportEquipmentByCategory(self):
         # Generates a report of equipment grouped by category
