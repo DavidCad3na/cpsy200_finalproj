@@ -21,7 +21,8 @@ class UserInterface:
             print("\n=== System Manager ===")
             print("1. Reset Inventory Data")
             print("2. View System Status")
-            print("3. Back to Main Menu")
+            print("3. Remove Rental Data")
+            print("4. Back to Main Menu")
 
             choice = input("Enter your choice: ")
 
@@ -39,6 +40,14 @@ class UserInterface:
                 print(f"Total Rentals: {len(self.db.fetch_query('SELECT * FROM rentals'))}")
                 print(f"Total Customers: {len(self.db.fetch_query('SELECT * FROM customers'))}")
             elif choice == "3":
+                confirm = input("Are you sure you want to remove all rental data? (yes/no): ").strip().lower()
+                if confirm == "yes":
+                    query = "DELETE FROM rentals"
+                    self.db.execute_query(query)
+                    print("All rental data has been removed.")
+                else:
+                    print("Remove operation canceled.")
+            elif choice == "4":
                 break
             else:
                 print("Invalid choice. Please try again.")
