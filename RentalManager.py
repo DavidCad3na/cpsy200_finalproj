@@ -16,11 +16,11 @@ class RentalManager:
         VALUES (%s, %s, %s, %s, %s, %s, %s)
         """
         self.db.execute_query(query, (rentalId, startDate, daysRented, customerId, equipmentId, float(dailyRentalCost), finalRentalCost))
-        if RentalEquipmentList.isEquipmentAvailable(self, equipment_id):
-            RentalEquipmentList.markAsRented(self, equipment_id)
+        if RentalEquipmentList.isEquipmentAvailable(self, equipmentId):
+            RentalEquipmentList.markAsRented(self, equipmentId)
             print(f"Rental with ID {rentalId} added successfully.")
         else:
-            print(f"Equipment with ID {equipment_id} is not available for rental.")
+            print(f"Equipment with ID {equipmentId} is not available for rental.")
 
     def endRental(self, rentalId, returnDate):
         query = "SELECT rentalStartDate, dailyRentalCost, equipment_id FROM rentals WHERE rentalId = %s"
