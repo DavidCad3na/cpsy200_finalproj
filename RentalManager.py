@@ -1,29 +1,34 @@
 # Created by David Cadena / Altered by Heet Talati
 
 from datetime import datetime
+import RentalEquipmentList
 
 class RentalManager:
     def __init__(self, db, equipment_list):
         self.db = db
         self.equipment_list = equipment_list
 
-    def addRental(self, rentalId, rentalStartDate, customer, equipment, dailyrentalCost):
+    def addRental(self, rentalId, rentalStartDate, customer, equipment_id,rentalCost):
         query = """
-        INSERT INTO rentals (rentalId, rentalStartDate, customer, equipment, dailyRentalCost)
+        INSERT INTO rentals (rentalId, rentalStartDate, customer, equipment_id, rentalCost)
         VALUES (%s, %s, %s, %s, %s)
         """
-        self.db.execute_query(query, (rentalId, rentalStartDate, customer, equipment, float(dailyrentalCost)))
-        print(f"Rental with ID {rentalId} added successfully.")
+        self.db.execute_query(query, (rentalId, rentalStartDate, customer, equipment_id,float(rentalCost)))
+        if RentalEquipmentList.isEquipmentAvailable(self, equipment_id):
+            RentalEquipmentList.markAsRented(self, equipment_id)
+            print(f"Rental with ID {rentalId} added successfully.")
+        else:
+            print(f"Equipment with ID {equipment_id} is not available for rental.")
 
     def endRental(self, rentalId, returnDate):
-        query = "SELECT rentalStartDate, dailyRentalCost FROM rentals WHERE rentalId = %s"
+        query = "SELECT rentalStartDate, dailyRentalCost, equipment_id FROM rentals WHERE rentalId = %s"
         result = self.db.fetch_query(query, (rentalId,))
 
         if not result:
             print(f"No rental found with ID {rentalId}.")
             return
 
-        rentalStartDate, dailyRentalCost = result[0]
+        rentalStartDate, dailyRentalCost, equipment_id = result[0]
 
         # Ensure rentalStartDate is a datetime.date object
         if isinstance(rentalStartDate, datetime):
@@ -42,7 +47,11 @@ class RentalManager:
         WHERE rentalId = %s
         """
         self.db.execute_query(update_query, (returnDate, finalRentalCost, rentalId))
+
+        # Mark the equipment as returned
+        self.equipment_list.markAsReturned(equipment_id)
         print(f"Rental with ID {rentalId} ended. Final cost: ${finalRentalCost:.2f}")
+        
 
     def removeRental(self, rentalId):
         query = "DELETE FROM rentals WHERE rentalId = %s"

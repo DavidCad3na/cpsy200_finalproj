@@ -60,7 +60,7 @@ class UserInterface:
             elif choice == "2":
                 equipment_id = input("Enter Equipment ID: ")
                 name = input("Enter Equipment Name: ")
-                available = input("Is the equipment available? (yes/no): ").strip().lower() == "yes"
+                available = 1
                 category_id = input("Enter Category ID: ")
                 self.rental_equipment_list.addRentalEquipment({
                     'equipmentId': equipment_id,
@@ -73,8 +73,8 @@ class UserInterface:
                 self.rental_equipment_list.removeRentalEquipment(equipment_id)
             elif choice == "4":
                 equipment_id = input("Enter Equipment ID to update availability: ")
-                availability = input("Is the equipment available? (yes/no): ").strip().lower() == "yes"
-                if availability:
+                availability = input("Is the equipment available? (yes/no): ").lower()
+                if availability == "yes":
                     self.rental_equipment_list.markAsReturned(equipment_id)
                 else:
                     self.rental_equipment_list.markAsRented(equipment_id)

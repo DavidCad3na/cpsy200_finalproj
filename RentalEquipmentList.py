@@ -7,7 +7,7 @@ class RentalEquipmentList:
     def addRentalEquipment(self, equipment):
         query = """
         INSERT INTO rental_equipment (equipmentId, name, available, categoryId)
-        VALUES (%s, %s, %s, %s)
+        VALUES (%s, %s, 1, %s)
         """
         self.db.execute_query(query, (
             equipment['equipmentId'],
@@ -40,18 +40,23 @@ class RentalEquipmentList:
         query = "SELECT available FROM rental_equipment WHERE equipmentId = %s"
         result = self.db.fetch_query(query, (equipmentId,))
         if result:
-            return result[0][0]
-        print(f"Equipment with ID {equipmentId} not found.")
-        return False
+            if result[0][0] == 1:
+                print(f"Equipment with ID {equipmentId} is available.")
+                return True
+            else:
+                print(f"Equipment with ID {equipmentId} is not available.")
+                return False
+        else:
+            print(f"Equipment with ID {equipmentId} not found.")
 
     def markAsRented(self, equipmentId):
-        query = "UPDATE rental_equipment SET available = FALSE WHERE equipmentId = %s"
+        query = "UPDATE rental_equipment SET available = 0 WHERE equipmentId = %s"
         self.db.execute_query(query, (equipmentId,))
         print(f"Equipment ID {equipmentId} marked as rented.")
         return True
 
     def markAsReturned(self, equipmentId):
-        query = "UPDATE rental_equipment SET available = TRUE WHERE equipmentId = %s"
+        query = "UPDATE rental_equipment SET available = 1 WHERE equipmentId = %s"
         self.db.execute_query(query, (equipmentId,))
         print(f"Equipment ID {equipmentId} marked as available.")
         return True
