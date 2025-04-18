@@ -113,9 +113,10 @@ class UserInterface:
         while True:
             print("\n=== Equipment Rental ===")
             print("1. Rent Equipment")
-            print("2. View Rented Equipment")
-            print("3. Calculate Rental Cost")
-            print("4. Back to Main Menu")
+            print("2. Return Equipment")
+            print("3. View Rented Equipment")
+            print("4. Calculate Rental Cost")
+            print("5. Back to Main Menu")
 
             choice = input("Enter your choice: ")
 
