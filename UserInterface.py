@@ -139,8 +139,7 @@ class UserInterface:
                 self.rental_manager.addRental(rental_id, rental_start_date, days_rented, customer, equipment, daily_rental_cost)
             elif choice == "2":
                 rental_id = input("Enter Rental ID to return: ")
-                return_date = input("Enter Return Date (YYYY-MM-DD): ")
-                self.rental_manager.endRental(rental_id, return_date)
+                self.rental_manager.endRental(rental_id)
             elif choice == "3":
                 self.rental_manager.viewRentals()
             elif choice == "4":

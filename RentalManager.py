@@ -22,7 +22,7 @@ class RentalManager:
         else:
             print(f"Equipment with ID {equipmentId} is not available for rental.")
 
-    def endRental(self, rentalId, returnDate):
+    def endRental(self, rentalId):
         query = "SELECT finalRentalCost, equipment_id FROM rentals WHERE rentalId = %s"
         result = self.db.fetch_query(query, (rentalId,))
 
