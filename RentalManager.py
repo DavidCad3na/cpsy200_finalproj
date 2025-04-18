@@ -1,6 +1,7 @@
 # Created by David Cadena / Altered by Heet Talati
 
 from datetime import datetime
+from unittest import removeResult
 from RentalEquipmentList import RentalEquipmentList
 
 class RentalManager:
@@ -49,7 +50,7 @@ class RentalManager:
         if not rentals:
             print("No rentals found.")
         else:
-            print("\n=== Current Rentals ===")
+            print("\n=== Rentals ===")
             for rental in rentals:
                 rentalId, startDate, daysRented, customerId, equipmentId, dailyRentalCost, finalRentalCost = rental
                 print(f"Rental ID: {rentalId}, Customer ID: {customerId}, Equipment ID: {equipmentId}, "
