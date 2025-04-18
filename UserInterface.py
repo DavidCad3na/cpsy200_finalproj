@@ -123,7 +123,7 @@ class UserInterface:
             print("\n=== Equipment Rental ===")
             print("1. Rent Equipment")
             print("2. Return Equipment")
-            print("3. View Rented Equipment")
+            print("3. View All Rentals")
             print("4. Calculate Rental Cost")
             print("5. Back to Main Menu")
 
