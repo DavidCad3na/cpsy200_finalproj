@@ -1,7 +1,7 @@
 # Created by David Cadena / Altered by Heet Talati
 
 from datetime import datetime
-import RentalEquipmentList
+from RentalEquipmentList import RentalEquipmentList
 
 class RentalManager:
     def __init__(self, db, equipment_list):

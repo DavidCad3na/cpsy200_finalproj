@@ -47,6 +47,7 @@ class RentalEquipmentList:
                 return False
         else:
             print(f"Equipment with ID {equipmentId} not found.")
+            return False
 
     def markAsRented(self, equipmentId):
         query = "UPDATE rental_equipment SET available = 0 WHERE equipmentId = %s"
