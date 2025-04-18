@@ -23,32 +23,14 @@ class RentalManager:
             print(f"Equipment with ID {equipmentId} is not available for rental.")
 
     def endRental(self, rentalId, returnDate):
-        query = "SELECT rentalStartDate, dailyRentalCost, equipment_id FROM rentals WHERE rentalId = %s"
+        query = "SELECT finalRentalCost, equipment_id FROM rentals WHERE rentalId = %s"
         result = self.db.fetch_query(query, (rentalId,))
 
         if not result:
             print(f"No rental found with ID {rentalId}.")
             return
 
-        rentalStartDate, dailyRentalCost, equipment_id = result[0]
-
-        # Ensure rentalStartDate is a datetime.date object
-        if isinstance(rentalStartDate, datetime):
-            rentalStartDate = rentalStartDate.date()
-
-        # Convert returnDate to a datetime.date object
-        returnDate_obj = datetime.strptime(returnDate, "%Y-%m-%d").date()
-
-        # Calculate the number of days rented
-        daysRented = (returnDate_obj - rentalStartDate).days
-        finalRentalCost = daysRented * dailyRentalCost
-
-        update_query = """
-        UPDATE rentals
-        SET returnDate = %s, finalRentalCost = %s
-        WHERE rentalId = %s
-        """
-        self.db.execute_query(update_query, (returnDate, finalRentalCost, rentalId))
+        finalRentalCost, equipment_id = result[0]
 
         # Mark the equipment as returned
         self.equipment_list.markAsReturned(equipment_id)
