@@ -23,17 +23,17 @@ class RentalManager:
             print(f"Equipment with ID {equipmentId} is not available for rental.")
 
     def endRental(self, rentalId):
-        query = "SELECT finalRentalCost, equipment_id FROM rentals WHERE rentalId = %s"
+        query = "SELECT finalRentalCost, equipmentId FROM rentals WHERE rentalId = %s"
         result = self.db.fetch_query(query, (rentalId,))
 
         if not result:
             print(f"No rental found with ID {rentalId}.")
             return
 
-        finalRentalCost, equipment_id = result[0]
+        finalRentalCost, equipmentId = result[0]
 
         # Mark the equipment as returned
-        self.equipment_list.markAsReturned(equipment_id)
+        self.equipment_list.markAsReturned(equipmentId)
         print(f"Rental with ID {rentalId} ended. Final cost: ${finalRentalCost:.2f}")
         
 
